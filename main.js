@@ -1,39 +1,34 @@
-const c = console.log.bind(document)
+'use strict';
 
-/********** Přihlášení **********/
-const uzivatel1 = {
-    email1: "tomas.novak@gmail.com",
-    heslo1: "CzechitasJeSuper",
-    jmeno: "Tomáš"
-}
+console.log('funguju!');
 
-let emailPrihlaseni = document.getElementById("Email1")
-let hesloPrihlaseni = document.getElementById("Password1")
-let spatneUdaje = document.getElementById("spatneUdaje")
-let spravneUdaje = document.getElementById("spravneUdaje")
-
-let formular2 = document.querySelector(".formular2")
-let email11 = ""
-let heslo11 = ""
-
-function prihlaseni(event){
+const startMinute = (event) => {
     event.preventDefault()
+    let time = Number(document.querySelector('.time-input').value)
 
-    email11 = emailPrihlaseni.value
-    heslo11 = hesloPrihlaseni.value
+    const sekundyElm = document.querySelector('.alarm__seconds')
+    const alarmElm = document.querySelector('.alarm')
 
-    if(email11 === uzivatel1.email1 && heslo11 === uzivatel1.heslo1){
-        spravneUdaje.classList.add("spravnePrihlaseni")
-        spravneUdaje.textContent = "Přihlášený uživatel " + uzivatel1.jmeno
-        formular2.classList.add("zmizeni")
+    alarmElm.classList.remove('alarm--ring')
 
+    sekundyElm.textContent = String(time)
+
+    const odpocet = () => {
+        if (time >0 ) {
+            time -= 1
+            sekundyElm.textContent = String(time)
+        }
+
+        if (time <= 0) {
+            clearInterval(casovac)
+            alarmElm.classList.add('alarm--ring')
+			document.querySelector('audio').play()
+        }
     }
-    else{
-        hesloPrihlaseni.value = ""
-        spatneUdaje.classList.add("spatnePrihlaseni1")
-        emailPrihlaseni.classList.add("spatnePrihlaseni2")
-        hesloPrihlaseni.classList.add("spatnePrihlaseni2")
-        
-        spatneUdaje.textContent = "Neplatné přihlašovací údaje."
-    }
+
+    const casovac = setInterval(odpocet, 1000)
+
 }
+
+const formularElm = document.querySelector('.controls')
+formularElm.addEventListener('submit', startMinute)
